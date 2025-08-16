@@ -43,14 +43,14 @@ Encoding and decoding HTML entities shouldn't be half of your bundle size. Unfor
 
 | Implementation | Size | Initialize (sampled) | Speed (sampled) |
 | --- | --- | --- | --- |
-| tinyentities | 18024b /  7783 gz | 0.51ms | 0.093ms |
-| entities | 24127b /  6396 gz | 0.084ms | 0.047ms |
-| html-entities | 28535b / 13148 gz | 1.3ms | 0.048ms |
+| tinyentities | 18102b /  7839 gz | 0.51ms | 0.05ms |
+| entities | 24127b /  6396 gz | 0.084ms | 0.046ms |
+| html-entities | 28535b / 13148 gz | 1.3ms | 0.047ms |
 
 ### encodeXML
 | Implementation | Size | Initialize (sampled) | Speed (sampled) |
 | --- | --- | --- | --- |
-| tinyentities |   229b /   203 gz | 0.00ms | 0.05ms |
+| tinyentities |   267b /   225 gz | 0.00ms | 0.036ms |
 | entities |   587b /   401 gz | 0.00ms | 0.037ms |
 | html-entities | 28547b / 13153 gz | 1.3ms | 0.05ms |
 
