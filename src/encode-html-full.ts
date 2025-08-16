@@ -5,9 +5,8 @@ import { getEntity as getHTMLEntity } from "./encoding-html.ts";
 
 const MATCHER = /[^A-Za-z0-9 ]\p{M}?|\u205f\u200a/gu;
 
-export const encodeHTML = (text: string): string => {
-  return text.replaceAll(
+export const encodeHTML = (text: string): string =>
+  text.replace(
     MATCHER,
     (match) => getHTMLEntity(match) || getBasicEntity(match),
   );
-};

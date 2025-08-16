@@ -1,3 +1,5 @@
+export { decodeHTML } from "./decode-html.ts";
+export { decodeXML } from "./decode-xml.ts";
 export { escapeHTML, escapeHTMLAttribute } from "./encode-html-escape.ts";
 export { encodeHTML } from "./encode-html-full.ts";
 export { escapeXML, escapeXMLAttribute } from "./encode-xml-escape.ts";
