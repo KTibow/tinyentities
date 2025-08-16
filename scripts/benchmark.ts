@@ -57,7 +57,7 @@ globalThis.run = () => encodeHTML(__INPUT__);`,
     entities: `import { encodeHTML } from "entities";
 globalThis.run = () => encodeHTML(__INPUT__);`,
     "html-entities": `import { encode } from "html-entities";
-globalThis.run = () => encode(__INPUT__, { mode: "nonAsciiPrintable" });`,
+globalThis.run = () => encode(__INPUT__, { mode: "extensive" });`,
   },
   encodeXML: {
     tinyentities: `import { encodeXML } from "./src/index.ts";
@@ -65,7 +65,7 @@ globalThis.run = () => encodeXML(__INPUT__);`,
     entities: `import { encodeXML } from "entities";
 globalThis.run = () => encodeXML(__INPUT__);`,
     "html-entities": `import { encode } from "html-entities";
-globalThis.run = () => encode(__INPUT__, { level: "xml" });`,
+globalThis.run = () => encode(__INPUT__, { mode: "extensive", level: "xml" });`,
   },
   decodeHTML: {
     tinyentities: `import { decodeHTML } from "./src/index.ts";
