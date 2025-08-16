@@ -21,67 +21,67 @@ const randomXML = encodeXML(randomRaw);
 const benchmarks = {
   escapeHTML: {
     tinyentities: `import { escapeHTML } from "./src/index.ts";
-globalThis.benchmarkResult = escapeHTML(__INPUT__);`,
+globalThis.run = () => escapeHTML(__INPUT__);`,
     entities: `import { escapeText } from "entities";
-globalThis.benchmarkResult = escapeText(__INPUT__);`,
+globalThis.run = () => escapeText(__INPUT__);`,
     "html-entities": `import { encode } from "html-entities";
-globalThis.benchmarkResult = encode(__INPUT__, { mode: "specialChars" });`,
+globalThis.run = () => encode(__INPUT__, { mode: "specialChars" });`,
   },
   escapeHTMLAttribute: {
     tinyentities: `import { escapeHTMLAttribute } from "./src/index.ts";
-globalThis.benchmarkResult = escapeHTMLAttribute(__INPUT__);`,
+globalThis.run = () => escapeHTMLAttribute(__INPUT__);`,
     entities: `import { escapeAttribute } from "entities";
-globalThis.benchmarkResult = escapeAttribute(__INPUT__);`,
+globalThis.run = () => escapeAttribute(__INPUT__);`,
     "html-entities": `import { encode } from "html-entities";
-globalThis.benchmarkResult = encode(__INPUT__, { mode: "specialChars" });`,
+globalThis.run = () => encode(__INPUT__, { mode: "specialChars" });`,
   },
   escapeXML: {
     tinyentities: `import { escapeXML } from "./src/index.ts";
-globalThis.benchmarkResult = escapeXML(__INPUT__);`,
+globalThis.run = () => escapeXML(__INPUT__);`,
     entities: `import { encodeXML } from "entities";
-globalThis.benchmarkResult = encodeXML(__INPUT__);`,
+globalThis.run = () => encodeXML(__INPUT__);`,
     "html-entities": `import { encode } from "html-entities";
-globalThis.benchmarkResult = encode(__INPUT__, { mode: "specialChars", level: "xml" });`,
+globalThis.run = () => encode(__INPUT__, { mode: "specialChars", level: "xml" });`,
   },
   escapeXMLAttribute: {
     tinyentities: `import { escapeXMLAttribute } from "./src/index.ts";
-globalThis.benchmarkResult = escapeXMLAttribute(__INPUT__);`,
+globalThis.run = () => escapeXMLAttribute(__INPUT__);`,
     entities: `import { encodeXML } from "entities";
-globalThis.benchmarkResult = encodeXML(__INPUT__);`,
+globalThis.run = () => encodeXML(__INPUT__);`,
     "html-entities": `import { encode } from "html-entities";
-globalThis.benchmarkResult = encode(__INPUT__, { mode: "specialChars", level: "xml" });`,
+globalThis.run = () => encode(__INPUT__, { mode: "specialChars", level: "xml" });`,
   },
   encodeHTML: {
     tinyentities: `import { encodeHTML } from "./src/index.ts";
-globalThis.benchmarkResult = encodeHTML(__INPUT__);`,
+globalThis.run = () => encodeHTML(__INPUT__);`,
     entities: `import { encodeHTML } from "entities";
-globalThis.benchmarkResult = encodeHTML(__INPUT__);`,
+globalThis.run = () => encodeHTML(__INPUT__);`,
     "html-entities": `import { encode } from "html-entities";
-globalThis.benchmarkResult = encode(__INPUT__, { mode: "nonAsciiPrintable" });`,
+globalThis.run = () => encode(__INPUT__, { mode: "nonAsciiPrintable" });`,
   },
   encodeXML: {
     tinyentities: `import { encodeXML } from "./src/index.ts";
-globalThis.benchmarkResult = encodeXML(__INPUT__);`,
+globalThis.run = () => encodeXML(__INPUT__);`,
     entities: `import { encodeXML } from "entities";
-globalThis.benchmarkResult = encodeXML(__INPUT__);`,
+globalThis.run = () => encodeXML(__INPUT__);`,
     "html-entities": `import { encode } from "html-entities";
-globalThis.benchmarkResult = encode(__INPUT__, { level: "xml" });`,
+globalThis.run = () => encode(__INPUT__, { level: "xml" });`,
   },
   decodeHTML: {
     tinyentities: `import { decodeHTML } from "./src/index.ts";
-globalThis.benchmarkResult = decodeHTML(__INPUT__);`,
+globalThis.run = () => decodeHTML(__INPUT__);`,
     entities: `import { decodeHTML } from "entities";
-globalThis.benchmarkResult = decodeHTML(__INPUT__);`,
+globalThis.run = () => decodeHTML(__INPUT__);`,
     "html-entities": `import { decode } from "html-entities";
-globalThis.benchmarkResult = decode(__INPUT__);`,
+globalThis.run = () => decode(__INPUT__);`,
   },
   decodeXML: {
     tinyentities: `import { decodeXML } from "./src/index.ts";
-globalThis.benchmarkResult = decodeXML(__INPUT__);`,
+globalThis.run = () => decodeXML(__INPUT__);`,
     entities: `import { decodeXML } from "entities";
-globalThis.benchmarkResult = decodeXML(__INPUT__);`,
+globalThis.run = () => decodeXML(__INPUT__);`,
     "html-entities": `import { decode } from "html-entities";
-globalThis.benchmarkResult = decode(__INPUT__, { level: "xml" });`,
+globalThis.run = () => decode(__INPUT__, { level: "xml" });`,
   },
 };
 
@@ -111,6 +111,12 @@ async function gzipCompress(data: string): Promise<Uint8Array> {
   return result;
 }
 
+const numberFormat = new Intl.NumberFormat(undefined, {
+  minimumFractionDigits: 2,
+  maximumSignificantDigits: 2,
+  maximumFractionDigits: 3,
+  roundingPriority: "lessPrecision",
+});
 const onlyFn = process.argv[2];
 for (const [fn, implementations] of Object.entries(benchmarks)) {
   if (onlyFn && fn != onlyFn) continue;
@@ -150,8 +156,10 @@ for (const [fn, implementations] of Object.entries(benchmarks)) {
     );
     console.log();
   }
-  console.log(`| Implementation | Size | Speed (avg sampled) |`);
-  console.log(`| --- | --- | --- |`);
+  console.log(
+    `| Implementation | Size | Initialize (sampled) | Speed (sampled) |`,
+  );
+  console.log(`| --- | --- | --- | --- |`);
 
   for (const [source, code] of Object.entries(implementations)) {
     process.stdout.write(`| ${source} `);
@@ -185,26 +193,33 @@ for (const [fn, implementations] of Object.entries(benchmarks)) {
     process.stdout.write(` / ${pad(gzipSize)} gz `);
 
     // Measure speed
-    const iterations = source == "html-entities" ? 2000 : 5000;
     delete globalThis.benchmarkResult;
-    (globalThis as any).__INPUT__ = payload;
-    const start = performance.now();
-    for (let i = 0; i < iterations; i++) {
+
+    const startInit = performance.now();
+    const iterationsInit = source == "html-entities" ? 2000 : 5000;
+    for (let i = 0; i < iterationsInit; i++) {
       eval(bundleCode);
+    }
+    const endInit = performance.now();
+    const avgTimeInit = (endInit - startInit) / iterationsInit;
+    process.stdout.write(`| ${numberFormat.format(avgTimeInit)}ms `);
+
+    globalThis.__INPUT__ = payload;
+    const start = performance.now();
+    const iterations = 10000;
+    for (let i = 0; i < iterations; i++) {
+      globalThis.run();
     }
     const end = performance.now();
     const avgTime = (end - start) / iterations;
+    process.stdout.write(`| ${numberFormat.format(avgTime)}ms |`);
+    console.log();
+
     delete (globalThis as any).__INPUT__;
 
     // Verify result exists
     const result = globalThis.benchmarkResult;
     delete globalThis.benchmarkResult;
-
-    // Log results
-    const round = (n: number, precision: number) => +n.toFixed(precision);
-    process.stdout.write(
-      `| ${avgTime < 0.02 ? round(avgTime, 3) : avgTime.toFixed(2)}ms |\n`,
-    );
   }
 
   console.log();

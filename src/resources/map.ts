@@ -1315,25 +1315,22 @@ filig
 fllig
 ffilig
 ffllig`;
-export const encodeHierarchy = /*#__PURE__*/ (() => {
-  const hierarchy: Map<number, Map<number, string>> = new Map();
+export const encodeMap = /*#__PURE__*/ (() => {
+  const map: Map<string, string> = new Map();
   unpack(packed, "\n", ({ index: firstLevel, value }) => {
-    if (!hierarchy.has(firstLevel)) {
-      hierarchy.set(firstLevel, new Map());
-    }
-    const secondLevelMap = hierarchy.get(firstLevel)!;
     unpack(value, ">", ({ index: secondLevel, value: entity }) => {
       if (entity.endsWith("!")) entity = entity.slice(0, -1);
       entity = `&${entity};`;
-      const existingEntity = secondLevelMap.get(secondLevel);
+      const character = secondLevel ? String.fromCharCode(firstLevel, secondLevel) : String.fromCharCode(firstLevel);
+      const existingEntity = map.get(character);
       if (existingEntity) {
         if (entity.length > existingEntity.length) return;
         if (entity.length == existingEntity.length && entity.toLowerCase() != entity) return;
       }
-      secondLevelMap.set(secondLevel, entity);
+      map.set(character, entity);
     });
   });
-  return hierarchy;
+  return map;
 })();
 export const decodeMap = /*#__PURE__*/ (() => {
   const map: Map<string, string> = new Map();

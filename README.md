@@ -4,36 +4,36 @@ Encoding and decoding HTML entities shouldn't be half of your bundle size. Unfor
 
 ## Benchmarks
 ### escapeHTML
-| Implementation | Size | Speed (avg sampled) |
-| --- | --- | --- |
-| tinyentities |   165b /   136 gz | 0.012ms |
-| entities |   347b /   269 gz | 0.014ms |
-| html-entities | 28546b / 13151 gz | 1.23ms |
+| Implementation | Size | Initialize (sampled) | Speed (sampled) |
+| --- | --- | --- | --- |
+| tinyentities |   157b /   128 gz | 0.00ms | 0.011ms |
+| entities |   339b /   263 gz | 0.001ms | 0.013ms |
+| html-entities | 28538b / 13146 gz | 1.3ms | 0.02ms |
 
 ### escapeHTMLAttribute
 > [!NOTE]
 > tinyentities serializes &lt; and &gt; here for [safety](https://developer.chrome.com/blog/escape-attributes),
 > making it slower.
 
-| Implementation | Size | Speed (avg sampled) |
-| --- | --- | --- |
-| tinyentities |   200b /   151 gz | 0.016ms |
-| entities |   336b /   266 gz | 0.008ms |
-| html-entities | 28546b / 13151 gz | 1.24ms |
+| Implementation | Size | Initialize (sampled) | Speed (sampled) |
+| --- | --- | --- | --- |
+| tinyentities |   192b /   145 gz | 0.00ms | 0.016ms |
+| entities |   328b /   259 gz | 0.00ms | 0.007ms |
+| html-entities | 28538b / 13146 gz | 1.3ms | 0.02ms |
 
 ### escapeXML
-| Implementation | Size | Speed (avg sampled) |
-| --- | --- | --- |
-| tinyentities |   137b /   125 gz | 0.01ms |
-| entities |   595b /   408 gz | 0.04ms |
-| html-entities | 28558b / 13155 gz | 1.22ms |
+| Implementation | Size | Initialize (sampled) | Speed (sampled) |
+| --- | --- | --- | --- |
+| tinyentities |   129b /   117 gz | 0.00ms | 0.009ms |
+| entities |   587b /   401 gz | 0.00ms | 0.037ms |
+| html-entities | 28550b / 13150 gz | 1.3ms | 0.021ms |
 
 ### escapeXMLAttribute
-| Implementation | Size | Speed (avg sampled) |
-| --- | --- | --- |
-| tinyentities |   197b /   149 gz | 0.02ms |
-| entities |   595b /   408 gz | 0.04ms |
-| html-entities | 28558b / 13155 gz | 1.23ms |
+| Implementation | Size | Initialize (sampled) | Speed (sampled) |
+| --- | --- | --- | --- |
+| tinyentities |   189b /   143 gz | 0.00ms | 0.019ms |
+| entities |   587b /   401 gz | 0.00ms | 0.038ms |
+| html-entities | 28550b / 13150 gz | 1.3ms | 0.021ms |
 
 ### encodeHTML
 > [!NOTE]
@@ -41,32 +41,32 @@ Encoding and decoding HTML entities shouldn't be half of your bundle size. Unfor
 > If you're doing both, tinyentities will be smaller and not duplicate mappings.
 > But if you only encode, like in this example, tinyentities will be slightly larger.
 
-| Implementation | Size | Speed (avg sampled) |
-| --- | --- | --- |
-| tinyentities | 18150b /  7843 gz | 0.45ms |
-| entities | 24135b /  6400 gz | 0.12ms |
-| html-entities | 28551b / 13154 gz | 1.26ms |
+| Implementation | Size | Initialize (sampled) | Speed (sampled) |
+| --- | --- | --- | --- |
+| tinyentities | 18039b /  7790 gz | 0.42ms | 0.1ms |
+| entities | 24127b /  6396 gz | 0.084ms | 0.046ms |
+| html-entities | 28543b / 13149 gz | 1.3ms | 0.043ms |
 
 ### encodeXML
-| Implementation | Size | Speed (avg sampled) |
-| --- | --- | --- |
-| tinyentities |   288b /   216 gz | 0.06ms |
-| entities |   595b /   408 gz | 0.04ms |
-| html-entities | 28538b / 13155 gz | 1.24ms |
+| Implementation | Size | Initialize (sampled) | Speed (sampled) |
+| --- | --- | --- | --- |
+| tinyentities |   280b /   210 gz | 0.00ms | 0.059ms |
+| entities |   587b /   401 gz | 0.00ms | 0.037ms |
+| html-entities | 28530b / 13150 gz | 1.3ms | 0.021ms |
 
 ### decodeHTML
-| Implementation | Size | Speed (avg sampled) |
-| --- | --- | --- |
-| tinyentities | 18180b /  7790 gz | 0.51ms |
-| entities | 32161b / 20486 gz | 0.72ms |
-| html-entities | 28351b / 13257 gz | 1.38ms |
+| Implementation | Size | Initialize (sampled) | Speed (sampled) |
+| --- | --- | --- | --- |
+| tinyentities | 18180b /  7793 gz | 0.49ms | 0.095ms |
+| entities | 32153b / 20480 gz | 0.42ms | 0.094ms |
+| html-entities | 28343b / 13252 gz | 1.3ms | 0.13ms |
 
 ### decodeXML
-| Implementation | Size | Speed (avg sampled) |
-| --- | --- | --- |
-| tinyentities |   437b /   262 gz | 0.05ms |
-| entities |  5571b /  2004 gz | 0.16ms |
-| html-entities | 28365b / 13264 gz | 1.30ms |
+| Implementation | Size | Initialize (sampled) | Speed (sampled) |
+| --- | --- | --- | --- |
+| tinyentities |   429b /   256 gz | 0.00ms | 0.055ms |
+| entities |  5563b /  1998 gz | 0.006ms | 0.053ms |
+| html-entities | 28357b / 13259 gz | 1.3ms | 0.071ms |
 
 ## Credit to
 [entities](https://github.com/fb55/entities) for showing the power of deltas in compression
