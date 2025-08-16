@@ -2,13 +2,19 @@ import { writeFile } from "node:fs/promises";
 import { type Unpacked, pack } from "../src/lib/deltapacking.ts";
 import entitiesRaw from "./entities.json" with { type: "json" };
 
-const assumption = /^&[A-Za-z][A-Za-z0-9]+;?$/;
+const assumedPattern = /^&[A-Za-z][A-Za-z0-9]+;?$/;
+
 // Generate a hierarchy where each level is a character code
 const hierarchy: Record<string, Record<string, string[]>> = {};
 for (const [entity, { characters }] of Object.entries(entitiesRaw)) {
-  // Verify assumption
-  if (!assumption.test(entity))
+  // Verify assumptions
+  if (!assumedPattern.test(entity))
     throw new Error(`Entity ${entity} does not match assumption`);
+  if (!entity.endsWith(";")) {
+    const hasWithSemi = entity + ";" in entitiesRaw;
+    if (!hasWithSemi)
+      throw new Error(`Entity ${entity} does not match assumption`);
+  }
 
   const firstLevel = characters.charCodeAt(0);
   const secondLevel =

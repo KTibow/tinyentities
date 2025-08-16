@@ -11,7 +11,10 @@ export const pack = (
   let output = "";
   let arrIndex = 0;
   let lastIndex = 0;
+  let excludedValues = new Set();
   for (const { index, value } of arr) {
+    if (excludedValues.has(value)) continue;
+
     // Starting a new item requires a separator
     if (arrIndex > 0) output += separator;
     // and an increment
@@ -26,6 +29,7 @@ export const pack = (
       if (value.endsWith(";")) {
         output += value.slice(1, -1);
       } else {
+        excludedValues.add(value + ";");
         output += value.slice(1) + "!";
       }
     } else {
@@ -54,15 +58,19 @@ export const unpack = (data: string, separator: string, isEntity = false) => {
     }
     index += increment;
 
+    const add = (value: string) => output.push({ index, value });
+
     if (isEntity) {
       if (value.endsWith("!")) {
-        value = `&${value.slice(0, -1)}`;
+        add(`&${value.slice(0, -1)};`);
+        add(`&${value.slice(0, -1)}`);
       } else {
-        value = `&${value};`;
+        add(`&${value};`);
       }
+    } else {
+      add(value);
     }
 
-    output.push({ index, value });
     arrIndex++;
   }
   return output;
