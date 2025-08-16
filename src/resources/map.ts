@@ -1316,32 +1316,32 @@ fllig
 ffilig
 ffllig`;
 export const encodeMap = /*#__PURE__*/ (() => {
-  const map: Map<string, string> = new Map();
+  const map: Record<string, string> = {};
   unpack(packed, "\n", ({ index: firstLevel, value }) => {
     unpack(value, ">", ({ index: secondLevel, value: entity }) => {
       if (entity.endsWith("!")) entity = entity.slice(0, -1);
       entity = `&${entity};`;
       const character = secondLevel ? String.fromCharCode(firstLevel, secondLevel) : String.fromCharCode(firstLevel);
-      const existingEntity = map.get(character);
+      const existingEntity = map[character];
       if (existingEntity) {
         if (entity.length > existingEntity.length) return;
         if (entity.length == existingEntity.length && entity.toLowerCase() != entity) return;
       }
-      map.set(character, entity);
+      map[character] = entity;
     });
   });
   return map;
 })();
 export const decodeMap = /*#__PURE__*/ (() => {
-  const map: Map<string, string> = new Map();
+  const map: Record<string, string> = {};
   unpack(packed, "\n", ({ index: firstLevel, value }) => {
     unpack(value, ">", ({ index: secondLevel, value: entity }) => {
       const character = secondLevel ? String.fromCharCode(firstLevel, secondLevel) : String.fromCharCode(firstLevel);
       if (entity.endsWith("!")) {
-        map.set(`&${entity.slice(0, -1)}`, character);
-        map.set(`&${entity.slice(0, -1)};`, character);
+        map[`&${entity.slice(0, -1)}`] = character;
+        map[`&${entity.slice(0, -1)};`] = character;
       } else {
-        map.set(`&${entity};`, character);
+        map[`&${entity};`] = character;
       }
     });
   });
