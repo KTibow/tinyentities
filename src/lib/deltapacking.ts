@@ -32,13 +32,12 @@ export const unpack = (
   for (let value of data.split(separator)) {
     if (!value) continue;
 
-    const explicitIncrement = parseInt(value);
     let increment: number;
-    if (Number.isNaN(explicitIncrement)) {
-      increment = arrIndex == 0 ? 0 : 1;
-    } else {
-      increment = explicitIncrement;
+    if ("0123456789".includes(value[0])) {
+      increment = parseInt(value);
       value = value.slice(increment.toString().length);
+    } else {
+      increment = arrIndex == 0 ? 0 : 1;
     }
     index += increment;
 
