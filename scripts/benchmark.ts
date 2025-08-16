@@ -83,6 +83,28 @@ globalThis.run = () => decodeXML(__INPUT__);`,
     "html-entities": `import { decode } from "html-entities";
 globalThis.run = () => decode(__INPUT__, { level: "xml" });`,
   },
+  tryReadHTML: {
+    tinyentities: `import { tryReadHTML } from "./src/index.ts";
+globalThis.run = () => __INPUT__.split("\\n").map(x => tryReadHTML(x));`,
+    entities: `import { EntityDecoder, DecodingMode, htmlDecodeTree } from "entities/decode";
+const decoder = new EntityDecoder(htmlDecodeTree, (cp, consumed) => {});
+globalThis.run = () => __INPUT__.split("\\n").map(x => {
+  decoder.startEntity(DecodingMode.Legacy);
+  decoder.write(x, 0);
+  decoder.end();
+});`,
+  },
+  tryReadXML: {
+    tinyentities: `import { tryReadXML } from "./src/index.ts";
+globalThis.run = () => __INPUT__.split("\\n").map(x => tryReadXML(x));`,
+    entities: `import { EntityDecoder, DecodingMode, xmlDecodeTree } from "entities/decode";
+const decoder = new EntityDecoder(xmlDecodeTree, (cp, consumed) => {});
+globalThis.run = () => __INPUT__.split("\\n").map(x => {
+  decoder.startEntity(DecodingMode.Strict);
+  decoder.write(x, 0);
+  decoder.end();
+});`,
+  },
 };
 
 async function gzipCompress(data: string): Promise<Uint8Array> {
@@ -121,18 +143,18 @@ const onlyFn = process.argv[2];
 for (const [fn, implementations] of Object.entries(benchmarks)) {
   if (onlyFn && fn != onlyFn) continue;
 
-  const kind = {
-    escapeHTML: "raw",
-    escapeHTMLAttribute: "raw",
-    encodeHTML: "raw",
-    escapeXML: "raw",
-    escapeXMLAttribute: "raw",
-    encodeXML: "raw",
-    decodeHTML: "html",
-    decodeXML: "xml",
+  const payload = {
+    escapeHTML: randomRaw,
+    escapeHTMLAttribute: randomRaw,
+    encodeHTML: randomRaw,
+    escapeXML: randomRaw,
+    escapeXMLAttribute: randomRaw,
+    encodeXML: randomRaw,
+    decodeHTML: randomHTML,
+    decodeXML: randomXML,
+    tryReadHTML: Array.from({ length: 1000 }, () => "&gt;").join("\n"),
+    tryReadXML: Array.from({ length: 1000 }, () => "&gt;").join("\n"),
   }[fn];
-  const payload =
-    kind == "html" ? randomHTML : kind == "xml" ? randomXML : randomRaw;
 
   console.log(`### ${fn}`);
   if (fn == "escapeHTMLAttribute") {

@@ -1,4 +1,4 @@
-export const getChar = (entity: string) => {
+export const getValue = (entity: string) => {
   if (entity.startsWith("&#x") || entity.startsWith("&#X")) {
     const code = parseInt(entity.slice(3, -1), 16);
     return String.fromCodePoint(code);

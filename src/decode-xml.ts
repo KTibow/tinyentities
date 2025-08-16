@@ -1,4 +1,4 @@
-import { getChar } from "./decoding-basic.ts";
+import { getValue } from "./decoding-basic.ts";
 
 const MATCHER = /&#x[0-9a-f]+;|&#[0-9]+;/gi;
 
@@ -8,5 +8,5 @@ export const decodeXML = (text: string): string =>
     .replaceAll("&quot;", '"')
     .replaceAll("&gt;", ">")
     .replaceAll("&lt;", "<")
-    .replace(MATCHER, (match) => getChar(match)!)
+    .replace(MATCHER, (match) => getValue(match)!)
     .replaceAll("&amp;", "&");
