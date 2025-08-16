@@ -8,7 +8,7 @@ import {
   escapeXML,
   escapeXMLAttribute,
   encodeXML,
-} from "./src/index.ts";
+} from "../src/index.ts";
 
 const ESCAPABLE_TEXT = `&<>"'\u00a0`;
 strictEqual(escapeHTML(ESCAPABLE_TEXT), `&amp;&lt;&gt;"'&nbsp;`);
