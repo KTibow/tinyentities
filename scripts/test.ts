@@ -29,6 +29,6 @@ strictEqual(
   `&#xb0; &#x394; &#x1d521; &#x2242;&#x338;`,
 );
 
-const DECODABLE_TEXT = "&#x3c; &#60; &lt; hello &amp; &AMP; &AMP &amp";
-strictEqual(decodeHTML(DECODABLE_TEXT), "< < < hello & & & &");
-strictEqual(decodeXML(DECODABLE_TEXT), "< < < hello & &AMP; &AMP &amp");
+const DECODABLE_TEXT = "&#x3c; &#60; &lt; hello&#x1F600; &amp; &AMP; &AMP &amp";
+strictEqual(decodeHTML(DECODABLE_TEXT), "< < < hello😀 & & & &");
+strictEqual(decodeXML(DECODABLE_TEXT), "< < < hello😀 & &AMP; &AMP &amp");

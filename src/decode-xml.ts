@@ -1,10 +1,10 @@
 import { getChar } from "./decoding-basic.ts";
 
-const MATCHER = /&#x[0-9a-f]+;|&#[0-9]+;/g;
+const MATCHER = /&#x[0-9a-f]+;|&#[0-9]+;/gi;
 
 export const decodeXML = (text: string): string =>
   text
-    .replaceAll("&apos;", '"')
+    .replaceAll("&apos;", "'")
     .replaceAll("&quot;", '"')
     .replaceAll("&gt;", ">")
     .replaceAll("&lt;", "<")
