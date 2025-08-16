@@ -18,17 +18,6 @@ const randomRaw = Array.from({ length: 1000 }, () => {
 const randomHTML = encodeHTML(randomRaw);
 const randomXML = encodeXML(randomRaw);
 
-const INPUT_KIND: Record<string, "raw" | "html" | "xml"> = {
-  escapeHTML: "raw",
-  escapeHTMLAttribute: "raw",
-  encodeHTML: "raw",
-  escapeXML: "raw",
-  escapeXMLAttribute: "raw",
-  encodeXML: "raw",
-  decodeHTML: "html",
-  decodeXML: "xml",
-};
-
 const benchmarks = {
   escapeHTML: {
     tinyentities: `import { escapeHTML } from "./src/index.ts";
@@ -122,8 +111,45 @@ async function gzipCompress(data: string): Promise<Uint8Array> {
   return result;
 }
 
+const onlyFn = process.argv[2];
 for (const [fn, implementations] of Object.entries(benchmarks)) {
+  if (onlyFn && fn != onlyFn) continue;
+
+  const kind = {
+    escapeHTML: "raw",
+    escapeHTMLAttribute: "raw",
+    encodeHTML: "raw",
+    escapeXML: "raw",
+    escapeXMLAttribute: "raw",
+    encodeXML: "raw",
+    decodeHTML: "html",
+    decodeXML: "xml",
+  }[fn];
+  const payload =
+    kind == "html" ? randomHTML : kind == "xml" ? randomXML : randomRaw;
+
   console.log(`### ${fn}`);
+  if (fn == "escapeHTMLAttribute") {
+    console.log("> [!NOTE]");
+    console.log(
+      "> tinyentities serializes &lt; and &gt; here for [safety](https://developer.chrome.com/blog/escape-attributes),",
+    );
+    console.log("> making it slower.");
+    console.log();
+  }
+  if (fn == "encodeHTML") {
+    console.log("> [!NOTE]");
+    console.log(
+      "> Other libraries have separate entity maps for encoding and decoding.",
+    );
+    console.log(
+      "> If you're doing both, tinyentities will be smaller and not duplicate mappings.",
+    );
+    console.log(
+      "> But if you only encode, like in this example, tinyentities will be slightly larger.",
+    );
+    console.log();
+  }
   console.log(`| Implementation | Size | Speed (avg sampled) |`);
   console.log(`| --- | --- | --- |`);
 
@@ -137,11 +163,11 @@ for (const [fn, implementations] of Object.entries(benchmarks)) {
         {
           name: "virtual-input",
           resolveId(id: string) {
-            if (id === virtualInputName) return id;
+            if (id == virtualInputName) return id;
             return null;
           },
           load(id: string) {
-            if (id === virtualInputName) return code;
+            if (id == virtualInputName) return code;
             return null;
           },
         },
@@ -159,11 +185,8 @@ for (const [fn, implementations] of Object.entries(benchmarks)) {
     process.stdout.write(` / ${pad(gzipSize)} gz `);
 
     // Measure speed
-    const iterations = source == "html-entities" ? 1000 : 5000;
+    const iterations = source == "html-entities" ? 2000 : 5000;
     delete globalThis.benchmarkResult;
-    const kind = INPUT_KIND[fn] ?? "raw";
-    const payload =
-      kind === "html" ? randomHTML : kind === "xml" ? randomXML : randomRaw;
     (globalThis as any).__INPUT__ = payload;
     const start = performance.now();
     for (let i = 0; i < iterations; i++) {
