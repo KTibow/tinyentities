@@ -1338,10 +1338,10 @@ export const decodeMap = /*#__PURE__*/ (() => {
     unpack(value, ">", ({ index: secondLevel, value: entity }) => {
       const character = secondLevel ? String.fromCharCode(firstLevel, secondLevel) : String.fromCharCode(firstLevel);
       if (entity.endsWith("!")) {
-        map[`&${entity.slice(0, -1)}`] = character;
-        map[`&${entity.slice(0, -1)};`] = character;
+        map[`${entity.slice(0, -1)}`] = character;
+        map[`${entity.slice(0, -1)};`] = character;
       } else {
-        map[`&${entity};`] = character;
+        map[`${entity};`] = character;
       }
     });
   });

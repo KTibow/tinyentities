@@ -35,23 +35,23 @@ const DECODABLE_TEXT = "&#x3c; &#60; &lt; hello&#x1F600; &amp; &AMP; &AMP &amp";
 strictEqual(decodeHTML(DECODABLE_TEXT), "< < < hello😀 & & & &");
 strictEqual(decodeXML(DECODABLE_TEXT), "< < < hello😀 & &AMP; &AMP &amp");
 
-const E_1 = "&";
-const E_2 = "&a";
-const E_3 = "&am";
-const E_4 = "&amp";
-const E_5 = "&amp;";
+const E_1 = "";
+const E_2 = "a";
+const E_3 = "am";
+const E_4 = "amp";
+const E_5 = "amp;";
 deepStrictEqual(tryReadXML(E_1), { type: "keep-going" });
 deepStrictEqual(tryReadXML(E_2), { type: "keep-going" });
 deepStrictEqual(tryReadXML(E_3), { type: "keep-going" });
 deepStrictEqual(tryReadXML(E_4), { type: "keep-going" });
-deepStrictEqual(tryReadXML(E_5), { type: "read", content: "&", consumed: 5 });
+deepStrictEqual(tryReadXML(E_5), { type: "read", content: "&", consumed: 4 });
 deepStrictEqual(tryReadHTML(E_1), { type: "keep-going" });
 deepStrictEqual(tryReadHTML(E_2), { type: "keep-going" });
 deepStrictEqual(tryReadHTML(E_3), { type: "keep-going" });
 deepStrictEqual(tryReadHTML(E_4), { type: "keep-going" });
-deepStrictEqual(tryReadHTML(E_5), { type: "read", content: "&", consumed: 5 });
+deepStrictEqual(tryReadHTML(E_5), { type: "read", content: "&", consumed: 4 });
 deepStrictEqual(tryReadHTML(E_4 + " "), {
   type: "read",
   content: "&",
-  consumed: 4,
+  consumed: 3,
 });

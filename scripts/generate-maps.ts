@@ -2,7 +2,7 @@ import { writeFile } from "node:fs/promises";
 import { type Unpacked, pack } from "../src/lib/deltapacking.ts";
 import entitiesRaw from "./entities.json" with { type: "json" };
 
-const assumption = /^&[A-Za-z][A-Za-z0-9]+;?$/;
+const assumption = /^&[A-Za-z][A-Za-z0-9]{1,30};?$/;
 // Generate a hierarchy where each level is a character code
 const hierarchy: Record<string, Record<string, string[]>> = {};
 for (const [entity, { codepoints, characters }] of Object.entries(
@@ -102,10 +102,10 @@ export const decodeMap = /*#__PURE__*/ (() => {
     unpack(value, ">", ({ index: secondLevel, value: entity }) => {
       const character = secondLevel ? String.fromCharCode(firstLevel, secondLevel) : String.fromCharCode(firstLevel);
       if (entity.endsWith("!")) {
-        map[\`&\${entity.slice(0, -1)}\`] = character;
-        map[\`&\${entity.slice(0, -1)};\`] = character;
+        map[\`\${entity.slice(0, -1)}\`] = character;
+        map[\`\${entity.slice(0, -1)};\`] = character;
       } else {
-        map[\`&\${entity};\`] = character;
+        map[\`\${entity};\`] = character;
       }
     });
   });

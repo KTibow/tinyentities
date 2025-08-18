@@ -91,7 +91,6 @@ const decoder = new EntityDecoder(htmlDecodeTree, (cp, consumed) => {});
 globalThis.run = () => __INPUT__.split("\\n").map(x => {
   decoder.startEntity(DecodingMode.Legacy);
   decoder.write(x, 0);
-  decoder.end();
 });`,
   },
   tryReadXML: {
@@ -102,7 +101,6 @@ const decoder = new EntityDecoder(xmlDecodeTree, (cp, consumed) => {});
 globalThis.run = () => __INPUT__.split("\\n").map(x => {
   decoder.startEntity(DecodingMode.Strict);
   decoder.write(x, 0);
-  decoder.end();
 });`,
   },
 };
@@ -152,9 +150,12 @@ for (const [fn, implementations] of Object.entries(benchmarks)) {
     encodeXML: randomRaw,
     decodeHTML: randomHTML,
     decodeXML: randomXML,
-    tryReadHTML: Array.from({ length: 1000 }, () => "&gt;").join("\n"),
-    tryReadXML: Array.from({ length: 1000 }, () => "&gt;").join("\n"),
+    tryReadHTML: Array.from({ length: 1000 }, () => "gt;").join("\n"),
+    tryReadXML: Array.from({ length: 1000 }, () => "gt;").join("\n"),
   }[fn];
+  if (!payload) {
+    throw new Error(`No payload for ${fn}`);
+  }
 
   console.log(`### ${fn}`);
   if (fn == "escapeHTMLAttribute") {
@@ -223,18 +224,25 @@ for (const [fn, implementations] of Object.entries(benchmarks)) {
       eval(bundleCode);
     }
     const endInit = performance.now();
-    const avgTimeInit = (endInit - startInit) / iterationsInit;
-    process.stdout.write(`| ${numberFormat.format(avgTimeInit)}ms `);
+    const avgTimeInitMs = (endInit - startInit) / iterationsInit;
+    const avgTimeInitUs = avgTimeInitMs * 1000;
+    process.stdout.write(`| ${numberFormat.format(avgTimeInitUs)}µs `);
 
     globalThis.__INPUT__ = payload;
     const start = performance.now();
-    const iterations = 10000;
+    const iterations = 25000;
     for (let i = 0; i < iterations; i++) {
       globalThis.run();
     }
     const end = performance.now();
-    const avgTime = (end - start) / iterations;
-    process.stdout.write(`| ${numberFormat.format(avgTime)}ms |`);
+    const avgTimeMs = (end - start) / iterations;
+    const avgTimeUs = avgTimeMs * 1000;
+    const avgTimeNs = avgTimeUs * 1000;
+
+    // Try to measure microseconds/byte if possible
+    let bytes = payload.length;
+    let speedStr = `${numberFormat.format(avgTimeNs / payload.length)}ns/b`;
+    process.stdout.write(`| ${speedStr} |`);
     console.log();
 
     delete (globalThis as any).__INPUT__;
