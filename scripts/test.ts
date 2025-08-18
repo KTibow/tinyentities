@@ -8,9 +8,13 @@ import {
   escapeXML,
   escapeXMLAttribute,
   encodeXML,
-  tryReadXML,
   tryReadHTML,
+  tryReadXML,
 } from "../src/index.ts";
+
+const DECODABLE_TEXT = "&#x3c; &#60; &lt; hello&#x1F600; &amp; &AMP; &AMP &amp";
+strictEqual(decodeHTML(DECODABLE_TEXT), "< < < hello😀 & & & &");
+strictEqual(decodeXML(DECODABLE_TEXT), "< < < hello😀 & &AMP; &AMP &amp");
 
 const ESCAPABLE_TEXT = `&<>"'\u00a0`;
 strictEqual(escapeHTML(ESCAPABLE_TEXT), `&amp;&lt;&gt;"'&nbsp;`);
@@ -30,10 +34,6 @@ strictEqual(
   encodeXML(UNICODE_TEXT),
   `&#xb0; &#x394; &#x1d521; &#x2242;&#x338;`,
 );
-
-const DECODABLE_TEXT = "&#x3c; &#60; &lt; hello&#x1F600; &amp; &AMP; &AMP &amp";
-strictEqual(decodeHTML(DECODABLE_TEXT), "< < < hello😀 & & & &");
-strictEqual(decodeXML(DECODABLE_TEXT), "< < < hello😀 & &AMP; &AMP &amp");
 
 const E_1 = "";
 const E_2 = "a";

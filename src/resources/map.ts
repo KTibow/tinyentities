@@ -1321,11 +1321,17 @@ export const encodeMap = /*#__PURE__*/ (() => {
     unpack(value, ">", ({ index: secondLevel, value: entity }) => {
       if (entity.endsWith("!")) entity = entity.slice(0, -1);
       entity = `&${entity};`;
-      const character = secondLevel ? String.fromCharCode(firstLevel, secondLevel) : String.fromCharCode(firstLevel);
+      const character = secondLevel
+        ? String.fromCharCode(firstLevel, secondLevel)
+        : String.fromCharCode(firstLevel);
       const existingEntity = map[character];
       if (existingEntity) {
         if (entity.length > existingEntity.length) return;
-        if (entity.length == existingEntity.length && entity.toLowerCase() != entity) return;
+        if (
+          entity.length == existingEntity.length &&
+          entity.toLowerCase() != entity
+        )
+          return;
       }
       map[character] = entity;
     });
@@ -1336,7 +1342,9 @@ export const decodeMap = /*#__PURE__*/ (() => {
   const map: Record<string, string> = {};
   unpack(packed, "\n", ({ index: firstLevel, value }) => {
     unpack(value, ">", ({ index: secondLevel, value: entity }) => {
-      const character = secondLevel ? String.fromCharCode(firstLevel, secondLevel) : String.fromCharCode(firstLevel);
+      const character = secondLevel
+        ? String.fromCharCode(firstLevel, secondLevel)
+        : String.fromCharCode(firstLevel);
       if (entity.endsWith("!")) {
         map[`${entity.slice(0, -1)}`] = character;
         map[`${entity.slice(0, -1)};`] = character;

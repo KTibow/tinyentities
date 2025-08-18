@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "tinyentities",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Encode and decode entities without bloating your bundle",
   "keywords": [
     "html entities"
@@ -9,6 +9,9 @@
   "author": {
     "name": "KTibow"
   },
+  "repository": "KTibow/tinyentities",
+  "homepage": "https://github.com/KTibow/tinyentities",
+  "funding": "https://github.com/sponsors/KTibow",
   "license": "MIT",
   "sideEffects": false,
   "files": [
