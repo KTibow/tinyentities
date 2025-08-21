@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "tinyentities",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Encode and decode entities without bloating your bundle",
   "keywords": [
     "html entities"
