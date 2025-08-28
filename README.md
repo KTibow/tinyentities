@@ -193,4 +193,5 @@ for await (const chunk of stream
 ## Credit to
 
 [entities](https://github.com/fb55/entities) for showing the power of deltas in compression
+
 [html-entities](https://github.com/mdevils/html-entities) for some awesome regex
