@@ -64,10 +64,22 @@ for (const [code, entities] of iterateMapping(hierarchy)) {
   if (!secondLevel.length) continue;
 
   // Separate each second level entry (instance of entity) with the character ">"
-  firstLevel.push({
-    index: code,
-    value: pack(secondLevel, ">"),
-  });
+  let buffer: Unpacked = [];
+  const emitBuffer = () => {
+    if (buffer.length) {
+      firstLevel.push({ index: code, value: pack(buffer, ">") });
+      buffer = [];
+    }
+  };
+  for (const entry of secondLevel) {
+    const lastEntry = buffer[buffer.length - 1];
+    if (lastEntry && lastEntry.index == entry.index) {
+      // (except for when it's the same, in which we should force another first level entry)
+      emitBuffer();
+    }
+    buffer.push(entry);
+  }
+  emitBuffer();
 }
 
 // Separate each first level entry (character that starts entities) with a linebreak

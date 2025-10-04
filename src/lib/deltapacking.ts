@@ -34,7 +34,7 @@ export const unpack = (
 
     let increment: number;
     if ("0123456789".includes(value[0])) {
-      increment = parseInt(value);
+      increment = parseInt(value, 10);
       value = value.slice(increment.toString().length);
     } else {
       increment = arrIndex == 0 ? 0 : 1;

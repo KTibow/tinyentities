@@ -103,9 +103,9 @@ for await (const chunk of stream
 
 | Implementation | Size              | Initialize (sampled) | Speed (sampled) |
 | -------------- | ----------------- | -------------------- | --------------- |
-| tinyentities   |   157b /   128 gz | 0.42µs               | 2.9ns/b         |
-| entities       |   339b /   263 gz | 0.38µs               | 3.1ns/b         |
-| html-entities  | 28538b / 13146 gz | 1,300µs              | 5.1ns/b         |
+| tinyentities   |   157b /   128 gz | 0.5µs                | 3ns/b           |
+| entities       |   339b /   263 gz | 0.52µs               | 3.1ns/b         |
+| html-entities  | 28538b / 13146 gz | 1,400µs              | 5.4ns/b         |
 
 ### escapeHTMLAttribute
 
@@ -115,25 +115,25 @@ for await (const chunk of stream
 
 | Implementation | Size              | Initialize (sampled) | Speed (sampled) |
 | -------------- | ----------------- | -------------------- | --------------- |
-| tinyentities   |   192b /   145 gz | 0.28µs               | 4ns/b           |
-| entities       |   328b /   259 gz | 0.37µs               | 1.8ns/b         |
-| html-entities  | 28538b / 13146 gz | 1,300µs              | 5.1ns/b         |
+| tinyentities   |   192b /   145 gz | 0.3µs                | 4ns/b           |
+| entities       |   328b /   259 gz | 0.51µs               | 1.8ns/b         |
+| html-entities  | 28538b / 13146 gz | 1,300µs              | 5.4ns/b         |
 
 ### escapeXML
 
 | Implementation | Size              | Initialize (sampled) | Speed (sampled) |
 | -------------- | ----------------- | -------------------- | --------------- |
-| tinyentities   |   129b /   117 gz | 0.25µs               | 2.4ns/b         |
-| entities       |   636b /   423 gz | 0.4µs                | 5.2ns/b         |
-| html-entities  | 28550b / 13150 gz | 1,300µs              | 5.2ns/b         |
+| tinyentities   |   129b /   117 gz | 0.29µs               | 2.4ns/b         |
+| entities       |   636b /   423 gz | 0.62µs               | 5ns/b           |
+| html-entities  | 28550b / 13150 gz | 1,400µs              | 5.8ns/b         |
 
 ### escapeXMLAttribute
 
 | Implementation | Size              | Initialize (sampled) | Speed (sampled) |
 | -------------- | ----------------- | -------------------- | --------------- |
-| tinyentities   |   189b /   143 gz | 0.27µs               | 4.9ns/b         |
-| entities       |   636b /   423 gz | 0.37µs               | 5.2ns/b         |
-| html-entities  | 28550b / 13150 gz | 1,300µs              | 5.2ns/b         |
+| tinyentities   |   189b /   143 gz | 0.31µs               | 5ns/b           |
+| entities       |   636b /   423 gz | 0.52µs               | 5.1ns/b         |
+| html-entities  | 28550b / 13150 gz | 1,400µs              | 5.7ns/b         |
 
 ### encodeHTML
 
@@ -144,47 +144,47 @@ for await (const chunk of stream
 
 | Implementation | Size              | Initialize (sampled) | Speed (sampled) |
 | -------------- | ----------------- | -------------------- | --------------- |
-| tinyentities   | 18102b /  7839 gz | 520µs                | 13ns/b          |
-| entities       | 14456b /  6247 gz | 120µs                | 6.8ns/b         |
-| html-entities  | 28535b / 13148 gz | 1,300µs              | 12ns/b          |
+| tinyentities   | 18233b /  7765 gz | 560µs                | 13ns/b          |
+| entities       | 14456b /  6247 gz | 130µs                | 6.6ns/b         |
+| html-entities  | 28535b / 13148 gz | 1,400µs              | 13ns/b          |
 
 ### encodeXML
 
 | Implementation | Size              | Initialize (sampled) | Speed (sampled) |
 | -------------- | ----------------- | -------------------- | --------------- |
-| tinyentities   |   267b /   225 gz | 0.28µs               | 9.3ns/b         |
-| entities       |   636b /   423 gz | 0.38µs               | 5.2ns/b         |
-| html-entities  | 28547b / 13153 gz | 1,300µs              | 13ns/b          |
+| tinyentities   |   267b /   225 gz | 0.51µs               | 9.9ns/b         |
+| entities       |   636b /   423 gz | 0.53µs               | 5ns/b           |
+| html-entities  | 28547b / 13153 gz | 1,400µs              | 13ns/b          |
 
 ### decodeHTML
 
 | Implementation | Size              | Initialize (sampled) | Speed (sampled) |
 | -------------- | ----------------- | -------------------- | --------------- |
-| tinyentities   | 18130b /  7780 gz | 550µs                | 9.2ns/b         |
-| entities       | 38623b / 22198 gz | 46µs                 | 7.2ns/b         |
-| html-entities  | 28343b / 13252 gz | 1,300µs              | 11ns/b          |
+| tinyentities   | 18261b /  7707 gz | 590µs                | 8.9ns/b         |
+| entities       | 38623b / 22198 gz | 48µs                 | 7.1ns/b         |
+| html-entities  | 28343b / 13252 gz | 1,400µs              | 11ns/b          |
 
 ### decodeXML
 
 | Implementation | Size              | Initialize (sampled) | Speed (sampled) |
 | -------------- | ----------------- | -------------------- | --------------- |
-| tinyentities   |   381b /   245 gz | 0.29µs               | 7.8ns/b         |
-| entities       |  6483b /  2223 gz | 5.4µs                | 6ns/b           |
-| html-entities  | 28357b / 13259 gz | 1,300µs              | 10ns/b          |
+| tinyentities   |   381b /   245 gz | 0.32µs               | 7.7ns/b         |
+| entities       |  6483b /  2223 gz | 7.9µs                | 5.9ns/b         |
+| html-entities  | 28357b / 13259 gz | 1,400µs              | 9.8ns/b         |
 
 ### tryReadHTML
 
 | Implementation | Size              | Initialize (sampled) | Speed (sampled) |
 | -------------- | ----------------- | -------------------- | --------------- |
-| tinyentities   | 18606b /  8024 gz | 520µs                | 15ns/b          |
-| entities       | 38277b / 22008 gz | 41µs                 | 13ns/b          |
+| tinyentities   | 18737b /  7949 gz | 570µs                | 14ns/b          |
+| entities       | 38277b / 22008 gz | 48µs                 | 12ns/b          |
 
 ### tryReadXML
 
 | Implementation | Size              | Initialize (sampled) | Speed (sampled) |
 | -------------- | ----------------- | -------------------- | --------------- |
-| tinyentities   |   725b /   438 gz | 0.27µs               | 11ns/b          |
-| entities       |  6141b /  2073 gz | 5.4µs                | 11ns/b          |
+| tinyentities   |   725b /   438 gz | 0.32µs               | 9.9ns/b         |
+| entities       |  6141b /  2073 gz | 8.3µs                | 10ns/b          |
 
 ## Credit to
 
