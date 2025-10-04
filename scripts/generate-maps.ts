@@ -3,6 +3,7 @@ import { type Unpacked, pack } from "../src/lib/deltapacking.ts";
 import entitiesRaw from "./entities.json" with { type: "json" };
 
 const assumption = /^&[A-Za-z][A-Za-z0-9]{1,30};?$/;
+let lastEntity = "";
 // Generate a hierarchy where each level is a character code
 const hierarchy: Record<string, Record<string, string[]>> = {};
 for (const [entity, { codepoints, characters }] of Object.entries(
@@ -27,6 +28,9 @@ for (const [entity, { codepoints, characters }] of Object.entries(
     !/^\u205f\u200a$/.test(characters)
   )
     throw new Error(`Entity ${entity} does not match assumption 5`);
+  if (entity <= lastEntity)
+    throw new Error(`Entity ${entity} does not match assumption 6`);
+  lastEntity = entity;
 
   const firstLevel = characters.charCodeAt(0);
   const secondLevel =
