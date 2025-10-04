@@ -77,7 +77,7 @@ for (const [code, entities] of iterateMapping(hierarchy)) {
   };
   for (const entry of secondLevel) {
     const lastEntry = buffer[buffer.length - 1];
-    if (lastEntry && lastEntry.index == entry.index) {
+    if (lastEntry && lastEntry.index == entry.index && entry.index < 1000) {
       // (except for when it's the same, in which we should force another first level entry)
       emitBuffer();
     }

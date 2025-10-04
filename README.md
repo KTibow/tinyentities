@@ -144,7 +144,7 @@ for await (const chunk of stream
 
 | Implementation | Size              | Initialize (sampled) | Speed (sampled) |
 | -------------- | ----------------- | -------------------- | --------------- |
-| tinyentities   | 18233b /  7765 gz | 560µs                | 13ns/b          |
+| tinyentities   | 18177b /  7757 gz | 560µs                | 13ns/b          |
 | entities       | 14456b /  6247 gz | 130µs                | 6.6ns/b         |
 | html-entities  | 28535b / 13148 gz | 1,400µs              | 13ns/b          |
 
@@ -160,7 +160,7 @@ for await (const chunk of stream
 
 | Implementation | Size              | Initialize (sampled) | Speed (sampled) |
 | -------------- | ----------------- | -------------------- | --------------- |
-| tinyentities   | 18261b /  7707 gz | 590µs                | 8.9ns/b         |
+| tinyentities   | 18205b /  7699 gz | 590µs                | 8.9ns/b         |
 | entities       | 38623b / 22198 gz | 48µs                 | 7.1ns/b         |
 | html-entities  | 28343b / 13252 gz | 1,400µs              | 11ns/b          |
 
@@ -176,7 +176,7 @@ for await (const chunk of stream
 
 | Implementation | Size              | Initialize (sampled) | Speed (sampled) |
 | -------------- | ----------------- | -------------------- | --------------- |
-| tinyentities   | 18737b /  7949 gz | 570µs                | 14ns/b          |
+| tinyentities   | 18681b /  7940 gz | 570µs                | 14ns/b          |
 | entities       | 38277b / 22008 gz | 48µs                 | 12ns/b          |
 
 ### tryReadXML
